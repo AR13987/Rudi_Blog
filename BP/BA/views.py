@@ -1,5 +1,11 @@
+from django.core.paginator import Paginator
+from .models import Post
 def index(request):
-    return render(request,'index.html')
+    posts = Post.objects.all().order_by('-created_at')
+    paginator = Paginator(posts, 50)  # 50 постов на странице
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'index.html', {'page_obj': page_obj})
 
 
 from .forms import UserProfileForm
@@ -24,20 +30,51 @@ def profile_view(request):
 
 
 
+from .models import Comment
 def delete_profile_view(request):
     if request.method == 'POST':
 
         user = request.user
 
         # Удаление всеч постов и комментариев пользователя:
-        # Post.objects.filter(author=user).delete()
-        # Comment.objects.filter(author=user).delete()
+        Post.objects.filter(author=user).delete()
+        Comment.objects.filter(author=user).delete()
 
         user.delete()
 
         return redirect('BA:index')
 
     return render(request, 'confirm_delete.html')
+
+
+from .forms import PostForm
+def create_post_view(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('BA:index')  # Перенаправление на главную страницу
+    else:
+        form = PostForm()
+    return render(request, 'create_post.html', {'form': form})
+
+
+
+def like_post_view(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+    return redirect('BA:index')
+
+
+
+def my_posts(request):
+    posts = Post.objects.filter(author=request.user)
+    return render(request, 'my_posts.html', {'posts': posts})
 
 
 

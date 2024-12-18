@@ -2,4 +2,34 @@
 
 {% block title %}<title>Главная страница</title>{% endblock %}
 {% block content %}
+{% for post in page_obj %}
+    <div class="post">
+        <h2>{{ post.title }}</h2>
+        <p>Автор: {{ post.author.username }}</p>
+        <p>Дата: {{ post.created_at }}</p>
+        <p>Количество комментариев: {{ post.comment_count }}</p>
+        <p>{{ post.content }}</p>
+        <p>
+            <a href="{% url 'BA:like_post' post.id %}">Лайк</a> ({{ post.likes.count }})
+        </p>
+    </div>
+{% endfor %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; Первая</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+        {% endif %}
+
+        <span class="current">
+            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 {% endblock %}

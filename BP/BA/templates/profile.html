@@ -13,4 +13,6 @@
 <p><strong>Биография:</strong> {{ user.bio }}</p>
 <a href="{% url 'BA:editing_profile' %}">Редактирование профиля</a>
 <a href="{% url 'BA:delete_profile' %}">Удалить профиль</a>
+<a href="{% url 'BA:create_post' %}">Создать пост</a>
+<a href="{% url 'BA:my_posts' %}">Мои посты</a>
 {% endblock %}

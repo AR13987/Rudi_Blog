@@ -19,3 +19,11 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ('last_name', 'first_name', 'middle_name', 'username', 'avatar', 'bio')
+
+
+
+from .models import Post
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'content']

@@ -21,3 +21,31 @@ class CustomUser(AbstractUser):
             raise ValidationError('Имя должно содержать только кириллические буквы, пробелы и дефисы.')
         if self.middle_name and not re.match(r'^[А-Яа-яЁёs-]*$', self.middle_name):
             raise ValidationError('Отчество должно содержать только кириллические буквы, пробелы и дефисы.')
+
+
+
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
+class Post(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=200, verbose_name='Название')
+    content = models.TextField(verbose_name='Контент')
+    created_at = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def comment_count(self):
+        return self.comments.count()
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Comment by {self.author} on {self.post}'

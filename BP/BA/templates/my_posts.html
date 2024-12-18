@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>Мои посты</title>{% endblock %}
+
+{% block content %}
+<h2>Мои посты</h2>
+
+{% if posts %}
+    <ul>
+    {% for post in posts %}
+        <li>
+            <h3>{{ post.title }}</h3>
+            <p>{{ post.content }}</p>
+            <p>Автор: {{ post.author.username }} | Дата: {{ post.created_at }}</p>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>У вас пока нет постов.</p>
+{% endif %}
+
+<a href="{% url 'BA:index' %}">Назад</a>
+{% endblock %}
