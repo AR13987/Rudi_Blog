@@ -24,7 +24,24 @@ def profile_view(request):
 
 
 
-from django.shortcuts import redirect, render
+def delete_profile_view(request):
+    if request.method == 'POST':
+
+        user = request.user
+
+        # Удаление всеч постов и комментариев пользователя:
+        # Post.objects.filter(author=user).delete()
+        # Comment.objects.filter(author=user).delete()
+
+        user.delete()
+
+        return redirect('BA:index')
+
+    return render(request, 'confirm_delete.html')
+
+
+
+from django.shortcuts import redirect, render, get_object_or_404
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 def register(request):
     if request.method == 'POST':
