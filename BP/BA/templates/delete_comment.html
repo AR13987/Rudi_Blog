@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>Удалить комментарий</title>{% endblock %}
+
+{% block content %}
+<h2>Вы уверены, что хотите удалить этот комментарий?</h2>
+<p>{{ comment.content }}</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Удалить</button>
+</form>
+<a href="{% url 'BA:index' %}">Назад</a>
+{% endblock %}

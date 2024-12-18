@@ -12,6 +12,9 @@
         <p>
             <a href="{% url 'BA:like_post' post.id %}">Лайк</a> ({{ post.likes.count }})
         </p>
+        <p>
+            <a href="{% url 'BA:post_detail' post.id %}">Подробнее о посте</a>
+        </p>
     </div>
 {% endfor %}
 

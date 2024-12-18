@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<h2>{{ post.title }}</h2>
+<p>{{ post.content }}</p>
+
+<h3>Комментарии:</h3>
+<ul>
+    {% for comment in comments %}
+    <li>
+        {{ comment.content }} - <strong>{{ comment.author.username }}</strong>
+        <a href="{% url 'BA:edit_comment' comment.id %}">Редактировать</a>
+        <a href="{% url 'BA:delete_comment' comment.id %}">Удалить</a>
+    </li>
+    {% empty %}
+    <li>Нет комментариев.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'BA:add_comment' post.id %}">Добавить комментарий</a>
+<a href="{% url 'BA:index' %}">Назад</a>
+{% endblock %}

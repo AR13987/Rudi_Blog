@@ -120,6 +120,62 @@ def delete_post(request, post_id):
 
 
 
+# Создание комментария:
+from .forms import CommentForm
+def add_comment(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            return redirect('BA:index')
+    else:
+        form = CommentForm()
+
+    return render(request, 'add_comment.html', {'form': form, 'post': post})
+
+
+
+# Редактирование комментария:
+def edit_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return redirect('BA:index')
+    else:
+        form = CommentForm(instance=comment)
+
+    return render(request, 'edit_comment.html', {'form': form, 'comment': comment})
+
+
+
+# Удаление комментария:
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    if request.method == 'POST':
+        comment.delete()
+        return redirect('BA:index')
+
+    return render(request, 'delete_comment.html', {'comment': comment})
+
+
+
+# Детали поста:
+def post_detail(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    comments = post.comments.all()  # Получение всех комментариев к посту
+    return render(request, 'post_detail.html', {'post': post, 'comments': comments})
+
+
+
 #Регистрация:
 from django.shortcuts import redirect, render, get_object_or_404
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
