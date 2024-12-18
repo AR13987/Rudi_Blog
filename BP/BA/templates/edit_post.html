@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>Редактировать пост</title>{% endblock %}
+
+{% block content %}
+  <h2>Редактировать пост: {{ post.title }}</h2>
+  <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Сохранить изменения</button>
+  </form>
+  <a href="{% url 'BA:index' %}">Назад</a>
+{% endblock %}

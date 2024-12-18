@@ -1,3 +1,4 @@
+# Главная страница:
 from django.core.paginator import Paginator
 from .models import Post
 def index(request):
@@ -8,6 +9,8 @@ def index(request):
     return render(request, 'index.html', {'page_obj': page_obj})
 
 
+
+# Редактирование профиля:
 from .forms import UserProfileForm
 from django.contrib.auth.decorators import login_required
 @login_required
@@ -24,12 +27,14 @@ def editing_profile_view(request):
 
 
 
+# Профиль:
 def profile_view(request):
     user = request.user
     return render(request, 'profile.html', {'user': user})
 
 
 
+# Удаление профиля:
 from .models import Comment
 def delete_profile_view(request):
     if request.method == 'POST':
@@ -47,6 +52,8 @@ def delete_profile_view(request):
     return render(request, 'confirm_delete.html')
 
 
+
+# Создание поста:
 from .forms import PostForm
 def create_post_view(request):
     if request.method == 'POST':
@@ -62,6 +69,7 @@ def create_post_view(request):
 
 
 
+# Лайк:
 def like_post_view(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.user in post.likes.all():
@@ -72,12 +80,47 @@ def like_post_view(request, post_id):
 
 
 
+# Мои посты:
 def my_posts(request):
     posts = Post.objects.filter(author=request.user)
     return render(request, 'my_posts.html', {'posts': posts})
 
 
 
+# Редактирование поста:
+def edit_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    if post.author != request.user:
+        return redirect('BA:index')
+
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('BA:my_posts')
+    else:
+        form = PostForm(instance=post)
+
+    return render(request, 'edit_post.html', {'form': form, 'post': post})
+
+
+# Удаление поста:
+def delete_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    if post.author != request.user:
+        return redirect('BA:index')
+
+    if request.method == 'POST':
+        post.delete()
+        return redirect('BA:index')
+
+    return render(request, 'delete_post.html', {'post': post})
+
+
+
+#Регистрация:
 from django.shortcuts import redirect, render, get_object_or_404
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 def register(request):
@@ -98,6 +141,7 @@ def register(request):
 
 
 
+# Авторизация:
 def login_user(request):
     if request.method == 'POST':
         form = CustomAuthenticationForm(request, data=request.POST)
@@ -117,6 +161,7 @@ def login_user(request):
 
 
 
+# Выход:
 from django.contrib.auth import login, authenticate, logout
 def logout_user(request):
     logout(request)

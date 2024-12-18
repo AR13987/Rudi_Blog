@@ -12,6 +12,8 @@
             <h3>{{ post.title }}</h3>
             <p>{{ post.content }}</p>
             <p>Автор: {{ post.author.username }} | Дата: {{ post.created_at }}</p>
+            <a href="{% url 'BA:edit_post' post.id %}">Редактировать</a>
+            <a href="{% url 'BA:delete_post' post.id %}">Удалить</a>
         </li>
     {% endfor %}
     </ul>
