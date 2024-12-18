@@ -8,7 +8,7 @@ body {
 }
 
 header {
-    background-color: #008000;
+    background-color: #FFCBDB;
     color: #fff;
     padding: 15px 20px;
     text-align: center;
@@ -167,7 +167,7 @@ label {
 footer {
     text-align: center;
     padding: 15px;
-    background-color: #004524;
+    background-color: #CCCCFF;
     color: white;
     position: relative; /* Чтобы подвал оставался внизу страницы */
 }
@@ -192,7 +192,7 @@ input[type="password"]:focus {
 /* Кнопка */
 button {
     padding: 10px;
-    background-color: #964B00;
+    background-color: #79553D;
     color: white;
     border: none;
     border-radius: 5px;

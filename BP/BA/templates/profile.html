@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Профиль</title>{% endblock %}
+{% block content %}
+<p><strong>Имя:</strong> {{ user.first_name }}</p>
+<p><strong>Фамилия:</strong> {{ user.last_name }}</p>
+<p><strong>Отчество:</strong> {{ user.middle_name }}</p>
+<p><strong>Логин:</strong> {{ user.username }}</p>
+{% if user.avatar %}
+    <p><strong>Аватар:</strong></p>
+    <img src="{{ user.avatar.url }}" alt="Аватар" style="width: 100px; height: 100px;">
+{% endif %}
+<p><strong>Биография:</strong> {{ user.bio }}</p>
+<a href="{% url 'BA:editing_profile' %}">Редактирование профиля</a>
+{% endblock %}

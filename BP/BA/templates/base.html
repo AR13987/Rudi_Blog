@@ -9,11 +9,12 @@
 </head>
 <body>
     <header>
-        <h1>Добро пожаловать на наш сайт!</h1>
+        <h1>Здесь ты можешь делиться с миром чем-то новым!</h1>
         <nav>
             <ul>
                 <li><a href="{% url 'BA:index' %}">Главная</a></li>
                 {% if user.is_authenticated %}
+                <li><a href="{% url 'BA:profile' %}">Профиль</a></li>
                 <form method="post" action="{% url 'BA:logout' %}">
                     {% csrf_token %}
                     <button type="submit">Выйти</button>
