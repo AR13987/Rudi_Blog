@@ -144,6 +144,9 @@ def add_comment(request, post_id):
 def edit_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
 
+    if comment.author != request.user:
+        return redirect('BA:index')
+
     if request.method == 'POST':
         form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
@@ -159,6 +162,9 @@ def edit_comment(request, comment_id):
 # Удаление комментария:
 def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
+
+    if comment.author != request.user:
+        return redirect('BA:index')
 
     if request.method == 'POST':
         comment.delete()

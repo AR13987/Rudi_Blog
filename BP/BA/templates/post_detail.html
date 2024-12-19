@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ post.title }}{% endblock %}
+{% block title %}<title>Детали поста</title>{% endblock %}
 
 {% block content %}
 <h2>{{ post.title }}</h2>
@@ -11,8 +11,10 @@
     {% for comment in comments %}
     <li>
         {{ comment.content }} - <strong>{{ comment.author.username }}</strong>
-        <a href="{% url 'BA:edit_comment' comment.id %}">Редактировать</a>
-        <a href="{% url 'BA:delete_comment' comment.id %}">Удалить</a>
+        {% if comment.author == user %}
+            <a href="{% url 'BA:edit_comment' comment.id %}">Редактировать</a>
+            <a href="{% url 'BA:delete_comment' comment.id %}">Удалить</a>
+        {% endif %}
     </li>
     {% empty %}
     <li>Нет комментариев.</li>
